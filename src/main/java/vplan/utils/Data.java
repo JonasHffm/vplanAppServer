@@ -18,12 +18,12 @@ public class Data {
     public static final String error = "✖✖✖✖";
     public static final String prefix = "FLSVPLAN >> ";
 
-    public static ArrayList<Vertretung> _vertretungsList = new ArrayList<Vertretung>();
-    public static ArrayList<Vertretung> _vstundenToAdd = new ArrayList<Vertretung>();
+    public static ArrayList<Vertretung> _vertretungsList = new ArrayList<>();
+    public static ArrayList<Vertretung> _vstundenToAdd = new ArrayList<>();
 
-    public static HashMap<String, Boolean> clientUpdateList = new HashMap<String, Boolean>();
+    public static HashMap<String, Boolean> clientUpdateList = new HashMap<>();
 
-    public static ArrayList<String> clientList = new ArrayList<String>();
+    public static ArrayList<String> clientList = new ArrayList<>();
 
     public static boolean acceptClients = true;
 

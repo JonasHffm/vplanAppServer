@@ -2,14 +2,15 @@ package vplan.command;
 
 
 
-import com.iclojure.jline.console.ConsoleReader;
-import com.iclojure.jline.console.completer.Completer;
-import com.iclojure.jline.console.completer.StringsCompleter;
+import jline.console.ConsoleReader;
+import jline.console.completer.ArgumentCompleter;
+import jline.console.completer.StringsCompleter;
 import vplan.utils.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class CommandReader extends Thread{
 
@@ -27,8 +28,10 @@ public class CommandReader extends Thread{
             try {
                 reader = new ConsoleReader();
                 reader.setPrompt("FLSVPLAN@root >> ");
-                StringsCompleter completer = new StringsCompleter("vertretung", "list", "update");
-                reader.addCompleter(completer);
+                reader.addCompleter(new ArgumentCompleter(new StringsCompleter("vertretung"), new StringsCompleter("list", "pack", "update")));
+                reader.addCompleter(new ArgumentCompleter(new StringsCompleter("console"), new StringsCompleter("clear")));
+                reader.addCompleter(new ArgumentCompleter(new StringsCompleter("client"), new StringsCompleter("list"), new StringsCompleter("clear")));
+                reader.addCompleter(new StringsCompleter("help"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
