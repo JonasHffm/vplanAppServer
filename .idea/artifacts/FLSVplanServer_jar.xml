@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FLSVplanServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FLSVplanServer_jar</output-path>
+    <root id="archive" name="FLSVplanServer.jar">
+      <element id="module-output" name="FLSVplanServer" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/offbytwo/jline/2.6/jline-2.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
