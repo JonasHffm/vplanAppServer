@@ -6,7 +6,11 @@ import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 import vplan.utils.Vertretung;
 
-public class CMD_vertretung implements FLSCommand {
+public class CMD_vertretung extends FLSCommand {
+
+    public CMD_vertretung(String command, String[] arguments) {
+        super(command, arguments);
+    }
 
     public void execute(String cmd, String[] args) {
         if(args.length == 1) {

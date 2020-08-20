@@ -4,7 +4,11 @@ package vplan.command.commands;
 import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
-public class CMD_client implements FLSCommand {
+public class CMD_client extends FLSCommand {
+
+    public CMD_client(String command, String[] arguments) {
+        super(command, arguments);
+    }
 
     public void execute(String cmd, String[] args) {
 
@@ -21,20 +25,16 @@ public class CMD_client implements FLSCommand {
                 }
                 System.out.println("  ");
                 System.out.println("  ");
-            }
-        }else if(args.length == 2) {
-            if(args[0].equalsIgnoreCase("list")) {
-                if(args[1].equalsIgnoreCase("clear")) {
-                    Data.clientUpdateList.clear();
-                    System.out.println(" ");
-                    System.out.println("Die Client-Update-Liste wurde geleert!");
-                    System.out.println(" ");
-                }
+            }else if(args[0].equalsIgnoreCase("clearlist")) {
+                Data.clientUpdateList.clear();
+                System.out.println(" ");
+                System.out.println("Die Client-Update-Liste wurde geleert!");
+                System.out.println(" ");
             }
         }else {
             System.out.println(Data.prefix + "Usage: ");
             System.out.println(Data.prefix + " -> client list");
-            System.out.println(Data.prefix + " -> client list clear");
+            System.out.println(Data.prefix + " -> client clearlist");
         }
 
     }

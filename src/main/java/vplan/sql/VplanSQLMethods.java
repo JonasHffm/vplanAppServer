@@ -99,8 +99,22 @@ public class VplanSQLMethods {
                                     packed++;
                                     System.out.println();
                                     System.out.println("{<package>");
+                                    //System.out.println(check.getStunde().split("|")[0] + " " + check.getStunde().split("|")[2] + " " + check.getStunde().split("|")[4]);
+                                    //System.out.println(vstunde.getStunde().split("|")[0] + " " + vstunde.getStunde().split("|")[2] + " " + vstunde.getStunde().split("|")[4]);
+
+                                    String firstTime = "";
+                                    String secondTime = "";
+                                    for(int i = 2; i <= 9; i++) {
+                                        firstTime += check.getStunde().split("|")[i];
+                                    }
+                                    for(int i = 10; i <= 18; i++) {
+                                        firstTime += vstunde.getStunde().split("|")[i];
+                                    }
                                     System.out.println(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + check.getStunde() + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
                                     System.out.println(vstunde.getSchultyp() + ";" + vstunde.getDatum() + ";" + vstunde.getKlasse() + ";" + vstunde.getStunde() + ";" + vstunde.getTeacher() + ";" + vstunde.getFach() + ";" + vstunde.getRaum() + ";" + vstunde.getVteacher() + ";" + vstunde.getVfach() + ";" + vstunde.getVraum() + ";" + vstunde.getMerkmal() + ";" + vstunde.getInfo());
+                                    System.out.println("<packed>");
+                                    System.out.println(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + stundeCHECK + "./" + stundeVSTUNDE + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
+                                    System.out.println("</packed>");
                                     System.out.println("</package>}");
                                     System.out.println();
                                 }

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class CommandReader extends Thread{
+public class CommandReader extends Thread {
 
     private CommandHandler commandHandler;
     public CommandReader(CommandHandler commandHandler) {
@@ -28,10 +28,14 @@ public class CommandReader extends Thread{
             try {
                 reader = new ConsoleReader();
                 reader.setPrompt("FLSVPLAN@root >> ");
-                reader.addCompleter(new ArgumentCompleter(new StringsCompleter("vertretung"), new StringsCompleter("list", "pack", "update")));
+                for(FLSCommand command : this.commandHandler.getRegisteredCommands().values()) {
+                    reader.addCompleter(new ArgumentCompleter(new StringsCompleter(command.getCommand()), new StringsCompleter(command.getArguments())));
+                }
+                /*reader.addCompleter(new ArgumentCompleter(new StringsCompleter("vertretung"), new StringsCompleter(new String[]{"list", "pack", "update"})));
                 reader.addCompleter(new ArgumentCompleter(new StringsCompleter("console"), new StringsCompleter("clear")));
                 reader.addCompleter(new ArgumentCompleter(new StringsCompleter("client"), new StringsCompleter("list"), new StringsCompleter("clear")));
                 reader.addCompleter(new StringsCompleter("help"));
+                 */
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -3,10 +3,7 @@ package vplan.main;
 
 import vplan.command.CommandHandler;
 import vplan.command.CommandReader;
-import vplan.command.commands.CMD_client;
-import vplan.command.commands.CMD_console;
-import vplan.command.commands.CMD_help;
-import vplan.command.commands.CMD_vertretung;
+import vplan.command.commands.*;
 import vplan.sql.SQL;
 import vplan.sql.VplanSQLMethods;
 import vplan.sql.VplanUpdater;
@@ -74,10 +71,10 @@ public class Initializer {
         this.command_reader = new CommandReader(this.handler);
         this.command_reader.start();
 
-        handler.registerCommand("vertretung", new CMD_vertretung());
-        handler.registerCommand("help", new CMD_help());
-        handler.registerCommand("client", new CMD_client());
-        handler.registerCommand("console", new CMD_console());
-
+        handler.registerCommand(new CMD_vertretung("vertretung", new String[]{"list", "update", "pack"}));
+        handler.registerCommand(new CMD_help("help", new String[]{}));
+        handler.registerCommand(new CMD_client("client", new String[]{"list", "clearlist"}));
+        handler.registerCommand(new CMD_console("console", new String[]{"clear"}));
+        handler.registerCommand(new CMD_exit("exit", new String[]{}));
     }
 }
