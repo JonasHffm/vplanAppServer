@@ -20,6 +20,7 @@ public class Data {
 
     public static ArrayList<Vertretung> _vertretungsList = new ArrayList<>();
     public static ArrayList<Vertretung> _vstundenToAdd = new ArrayList<>();
+    public static ArrayList<String> packedToSend = new ArrayList<>();
 
     public static HashMap<String, Boolean> clientUpdateList = new HashMap<>();
 
@@ -28,6 +29,10 @@ public class Data {
     public static boolean acceptClients = true;
 
     public static int downloadCounter = 0;
+    public static int alreadyDownloaded = 0;
+
+
+    public static boolean doneLoading = false;
 
 
 

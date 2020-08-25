@@ -37,33 +37,16 @@ public class Server {
 
     public void sendVertretungsstunden(Socket _client) {
 
-        for(Vertretung _vertretung : Data._vertretungsList) {
-
-             String schultyp = _vertretung.getSchultyp();
-             String datum = _vertretung.getDatum();
-             String klasse = _vertretung.getKlasse();
-             String stunde = _vertretung.getStunde();
-             String teacher = _vertretung.getTeacher();
-             String fach = _vertretung.getFach();
-             String raum = _vertretung.getRaum();
-             String vteacher = _vertretung.getVteacher();
-             String vfach = _vertretung.getVfach();
-             String vraum = _vertretung.getVraum();
-             String merkmal = _vertretung.getMerkmal();
-             String info = _vertretung.getInfo();
-
-             String _vstundeToSend = schultyp + ";" + datum + ";" + klasse + ";" + stunde + ";" + teacher + ";" + fach + ";" + raum + ";" + vteacher + ";" + vfach + ";" + vraum + ";" + merkmal + ";" + info;
-
+        System.out.println("Sende alle Vertretungsstunden zu Client: " + _client.getInetAddress().toString());
+        for(String stundeTosend : Data.packedToSend) {
             try {
 
                 GregorianCalendar now = new GregorianCalendar();
                 DateFormat df = //DateFormat.getDateInstance(DateFormat.SHORT);   // 14.04.12
                 df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM); // 14.04.12 21:34:07 MESZ
-                System.out.println();
 
                 PrintWriter writer = new PrintWriter(_client.getOutputStream());
-                System.out.println(df.format(now.getTime()) + " | Sende ->  \"" + _vstundeToSend + "\"      -> CLIENT: " + _client.getInetAddress());
-                writer.write(_vstundeToSend + " \n");
+                writer.write(stundeTosend + " \n");
                 writer.flush();
 
             } catch (IOException e) {

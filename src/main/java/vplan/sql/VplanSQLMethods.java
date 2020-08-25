@@ -2,6 +2,7 @@ package vplan.sql;
 
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
+import vplan.utils.Log;
 import vplan.utils.Vertretung;
 
 import java.sql.ResultSet;
@@ -56,8 +57,15 @@ public class VplanSQLMethods {
                     }else {
                         System.out.println("<<< Download der Daten vom " + date + " abgeschlossen!  (Stunden: " + downloadCount + ")");
                         downloadCount = 0;
+                        Data.alreadyDownloaded++;
+
+                        if(Data.alreadyDownloaded == FLSVertretungsplan.instance.getLoadDays()+1) {
+                            Data.doneLoading = true;
+                        }
+
                         Data.acceptClients = true;
                         Data.downloadCounter++;
+
                         this.cancel();
                     }
 
@@ -70,9 +78,10 @@ public class VplanSQLMethods {
 
     }
 
-    public void packVertretungsstunden() {
+    public void packVertretungsstunden(String date) {
 
         if(Data._vertretungsList.size() != 0) {
+            Data.packedToSend.clear();
             int packed = 0;
             for (Vertretung vstunde : Data._vertretungsList) {
 
@@ -97,8 +106,6 @@ public class VplanSQLMethods {
                             if(stundeVSTUNDE > stundeCHECK  && (Math.abs(stundeCHECK-stundeVSTUNDE) == 1)) {
                                 if(stundeCHECK == 1 && stundeVSTUNDE == 2 || stundeCHECK == 3 && stundeVSTUNDE == 4 || stundeCHECK == 5 && stundeVSTUNDE == 6 || stundeCHECK == 7 && stundeVSTUNDE == 8 || stundeCHECK == 9 && stundeVSTUNDE == 10) {
                                     packed++;
-                                    System.out.println();
-                                    System.out.println("{<package>");
                                     //System.out.println(check.getStunde().split("|")[0] + " " + check.getStunde().split("|")[2] + " " + check.getStunde().split("|")[4]);
                                     //System.out.println(vstunde.getStunde().split("|")[0] + " " + vstunde.getStunde().split("|")[2] + " " + vstunde.getStunde().split("|")[4]);
 
@@ -110,22 +117,28 @@ public class VplanSQLMethods {
                                     for(int i = 10; i <= 18; i++) {
                                         firstTime += vstunde.getStunde().split("|")[i];
                                     }
+
+                                    /*
                                     System.out.println(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + check.getStunde() + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
                                     System.out.println(vstunde.getSchultyp() + ";" + vstunde.getDatum() + ";" + vstunde.getKlasse() + ";" + vstunde.getStunde() + ";" + vstunde.getTeacher() + ";" + vstunde.getFach() + ";" + vstunde.getRaum() + ";" + vstunde.getVteacher() + ";" + vstunde.getVfach() + ";" + vstunde.getVraum() + ";" + vstunde.getMerkmal() + ";" + vstunde.getInfo());
                                     System.out.println("<packed>");
                                     System.out.println(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + stundeCHECK + "./" + stundeVSTUNDE + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
+                                    Data.packedToSend.add(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + stundeCHECK + "./" + stundeVSTUNDE + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
                                     System.out.println("</packed>");
                                     System.out.println("</package>}");
                                     System.out.println();
+                                    */
+
+
+                                    Data.packedToSend.add(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + stundeCHECK + "./" + stundeVSTUNDE + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
                                 }
                             }
                         }
                     }
                 }
             }
-            System.out.println();
-            System.out.println();
             System.out.println("Es wurden " + packed + " Stunden zusammengefasst!");
+            System.out.println();
         }
     }
 

@@ -9,6 +9,10 @@ import vplan.sql.VplanSQLMethods;
 import vplan.sql.VplanUpdater;
 import vplan.utils.Data;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Initializer {
 
     private CommandHandler handler;
@@ -57,24 +61,52 @@ public class Initializer {
         this.vplanSQLMethods = vplanSQLMethods;
     }
 
+    public int loadDays = 2;
+
     public void init() {
+
+        startDelayTimer();
+
+        Data.packedToSend = new ArrayList<>();
 
         vplanSQLMethods = new VplanSQLMethods();
 
         mysql = new SQL(Data.host, Data.database, Data.user, Data.password);
         mysql.connect();
 
-        updater = new VplanUpdater(3);
+        updater = new VplanUpdater(loadDays);
         updater.update();
 
-        this.handler = new CommandHandler();
-        this.command_reader = new CommandReader(this.handler);
-        this.command_reader.start();
+    }
 
-        handler.registerCommand(new CMD_vertretung("vertretung", new String[]{"list", "update", "pack"}));
-        handler.registerCommand(new CMD_help("help", new String[]{}));
-        handler.registerCommand(new CMD_client("client", new String[]{"list", "clearlist"}));
-        handler.registerCommand(new CMD_console("console", new String[]{"clear"}));
-        handler.registerCommand(new CMD_exit("exit", new String[]{}));
+    public void startDelayTimer() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(Data.doneLoading) {
+                    new VplanSQLMethods().packVertretungsstunden("ALL LOADED DAYS");
+                    Data.doneLoading = false;
+                    Data.alreadyDownloaded = 0;
+
+                    if(handler == null) {
+                        handler = new CommandHandler();
+                        command_reader = new CommandReader(handler);
+                        command_reader.start();
+
+                        handler.registerCommand(new CMD_vertretung("vertretung", new String[]{"list", "update", "pack"}));
+                        handler.registerCommand(new CMD_help("help", new String[]{}));
+                        handler.registerCommand(new CMD_client("client", new String[]{"list", "clearlist"}));
+                        handler.registerCommand(new CMD_console("console", new String[]{"clear"}));
+                        handler.registerCommand(new CMD_exit("exit", new String[]{}));
+                    }
+
+                }
+            }
+        }, 0, 2000);
+    }
+
+    public int getLoadDays() {
+        return loadDays;
     }
 }

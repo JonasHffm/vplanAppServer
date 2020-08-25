@@ -49,7 +49,7 @@ public class CMD_vertretung extends FLSCommand {
                 System.out.println(" -> Es wurden " + Data._vertretungsList.size() + " Stunden auf dem Server geladen!");
                 System.out.println("-----------------------------------------------");
             }else if(args[0].equalsIgnoreCase("pack")) {
-                FLSVertretungsplan.instance.getVplanSQLMethods().packVertretungsstunden();
+                FLSVertretungsplan.instance.getVplanSQLMethods().packVertretungsstunden("ALL LOADED DATES");
             }else {
                 System.out.println(Data.prefix + "Usage: ");
                 System.out.println(Data.prefix + " -> vertretung update");
