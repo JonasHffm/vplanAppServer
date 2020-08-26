@@ -5,9 +5,12 @@ import vplan.utils.Vertretung;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Server {
@@ -38,21 +41,38 @@ public class Server {
     public void sendVertretungsstunden(Socket _client) {
 
         System.out.println("Sende alle Vertretungsstunden zu Client: " + _client.getInetAddress().toString());
-        for(String stundeTosend : Data.packedToSend) {
-            try {
 
-                GregorianCalendar now = new GregorianCalendar();
-                DateFormat df = //DateFormat.getDateInstance(DateFormat.SHORT);   // 14.04.12
-                df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM); // 14.04.12 21:34:07 MESZ
 
-                PrintWriter writer = new PrintWriter(_client.getOutputStream());
-                writer.write(stundeTosend + " \n");
-                writer.flush();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(_client.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        String newLine = "\r\n";
+
+        String data = "HTTP/1.0 200 OK" + newLine +
+                "Content-Type: text/plain" + newLine +
+                "Date: " + new Date() + newLine +
+                "Content-length: ";
+
+        String response = "";
+
+
+        for(String stundeTosend : Data.packedToSend) {
+
+//            writer.write(stundeTosend + " \n");
+//            writer.flush();
+            response += stundeTosend + " \n";
+
+
+        }
+
+        data += response.length() + newLine + newLine + response;
+        writer.write(data);
+        writer.flush();
+
     }
 
     public void sendNull(Socket _client) {
