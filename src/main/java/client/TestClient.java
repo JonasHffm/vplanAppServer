@@ -10,7 +10,7 @@ public class TestClient {
     public static void main(String[] args) throws IOException {
 
 
-        Socket socket = new Socket("127.0.0.1", 1111);
+        Socket socket = new Socket("127.0.0.1", 1112);
 
         System.out.println("Client wurde verbunden");
 

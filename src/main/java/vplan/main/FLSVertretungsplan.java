@@ -4,6 +4,12 @@ package vplan.main;
 import vplan.server.Server;
 import vplan.utils.Log;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Date;
 
 public class FLSVertretungsplan {
@@ -14,7 +20,7 @@ public class FLSVertretungsplan {
 
     public static Initializer instance = new Initializer();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         Log.prLogo();
@@ -24,7 +30,7 @@ public class FLSVertretungsplan {
         System.out.println();
         System.out.println();
 
-        server = new Server(1111);
+        server = new Server(1112);
         server.boot();
 
         date = new Date();
