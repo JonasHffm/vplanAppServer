@@ -10,12 +10,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class FLSVertretungsplan {
 
     public static Server server;
-    public static Date date;
     public static String dateToSend;
 
     public static Initializer instance = new Initializer();
@@ -25,6 +26,7 @@ public class FLSVertretungsplan {
 
         Log.prLogo();
 
+
         instance.init();
 
         System.out.println();
@@ -33,8 +35,7 @@ public class FLSVertretungsplan {
         server = new Server(1112);
         server.boot();
 
-        date = new Date();
-        dateToSend = date.getYear() + "" + date.getMonth() + "" + date.getDay();
+
 
 
     }

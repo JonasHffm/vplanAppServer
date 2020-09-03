@@ -4,6 +4,8 @@ package vplan.sql;
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,9 +13,11 @@ public class VplanUpdater{
 
     private int loadDays;
     public int lenght = 0;
+    public LocalDateTime localDate;
 
-    public VplanUpdater(int loadDays) {
+    public VplanUpdater(int loadDays, LocalDateTime localDate) {
         this.loadDays = loadDays;
+        this.localDate = localDate;
         VplanUpdateTasks();
     }
 
@@ -23,7 +27,7 @@ public class VplanUpdater{
             Data.clientUpdateList.put(client, false);
         }
         for(int i = 0; i <= loadDays; i++) {
-            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, "2020/02/10"));
+            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, "2020-09-05"));
         }
 
         //for(Vertretung vertretung : Data._vertretungsList) Main.vplanSQLMethods.removeDoubleStunden(vertretung);

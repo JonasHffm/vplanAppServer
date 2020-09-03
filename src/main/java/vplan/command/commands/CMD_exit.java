@@ -3,7 +3,7 @@ package vplan.command.commands;
 import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
-public class CMD_exit extends FLSCommand {
+public class CMD_exit extends CMD_vertretung {
 
     public CMD_exit(String exit, String[] strings) {
         super(exit, strings);

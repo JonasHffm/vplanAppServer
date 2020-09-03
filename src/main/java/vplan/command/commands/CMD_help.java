@@ -5,7 +5,7 @@ import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 import vplan.utils.Log;
 
-public class CMD_help extends FLSCommand {
+public class CMD_help extends CMD_console {
 
     public CMD_help(String command, String[] arguments) {
         super(command, arguments);

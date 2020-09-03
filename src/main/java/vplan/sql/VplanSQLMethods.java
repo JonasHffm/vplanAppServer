@@ -7,7 +7,13 @@ import vplan.utils.Vertretung;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,8 +37,6 @@ public class VplanSQLMethods {
             public void run() {
 
                 try {
-
-                    int vpid = 0;
 
                     if(rs.next()) {
 
@@ -229,13 +233,56 @@ public class VplanSQLMethods {
         //LocalDateTime now = LocalDateTime.now();
         //System.out.println(dtf.format(now));
 
-        int year = Integer.valueOf(date.split("/")[0]);
-        int month = Integer.valueOf(date.split("/")[1]);
-        int day = Integer.valueOf(date.split("/")[2]);
+        System.out.println();
+        int year = Integer.valueOf(date.split("-")[0]);
+        int month = Integer.valueOf(date.split("-")[1]);
+        int day = Integer.valueOf(date.split("-")[2]);
 
-        day += plusDays;
 
         String returnDateValue = year + "-" + month + "-" + day;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        LocalDate dateParse = LocalDate.parse(returnDateValue, formatter);
+        DayOfWeek dayOfWeek = dateParse.getDayOfWeek();
+
+        if(dayOfWeek.equals(DayOfWeek.THURSDAY)) {
+            if(plusDays != 2) {
+                returnDateValue = dateParse.plusDays(plusDays).toString();
+            }else {
+                returnDateValue = dateParse.plusDays(4).toString();
+            }
+        }else if(dayOfWeek.equals(DayOfWeek.FRIDAY)) {
+            if(plusDays == 0) {
+                returnDateValue = dateParse.plusDays(plusDays).toString();
+            }else if(plusDays == 1){
+                returnDateValue = dateParse.plusDays(3).toString();
+            }else if(plusDays == 2){
+                returnDateValue = dateParse.plusDays(4).toString();
+            }
+        }else if(dayOfWeek.equals(DayOfWeek.SATURDAY)) {
+            if(plusDays == 0) {
+                returnDateValue = dateParse.plusDays(2).toString();
+            }else if(plusDays == 1){
+                returnDateValue = dateParse.plusDays(3).toString();
+            }else if(plusDays == 2){
+                returnDateValue = dateParse.plusDays(4).toString();
+            }
+        }else if(dayOfWeek.equals(DayOfWeek.SUNDAY)) {
+            if(plusDays == 0) {
+                returnDateValue = dateParse.plusDays(1).toString();
+            }else if(plusDays == 1){
+                returnDateValue = dateParse.plusDays(2).toString();
+            }else if(plusDays == 2){
+                returnDateValue = dateParse.plusDays(3).toString();
+            }
+        }else {
+            returnDateValue = dateParse.plusDays(plusDays).toString();
+        }
+        dateParse = LocalDate.parse(returnDateValue, formatter);
+        dayOfWeek = dateParse.getDayOfWeek();
+
+        System.out.println("1 -  " + dayOfWeek);
+        System.out.println("2 -  " + dateParse.toString());
 
         return returnDateValue;
 

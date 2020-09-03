@@ -9,6 +9,8 @@ import vplan.sql.VplanSQLMethods;
 import vplan.sql.VplanUpdater;
 import vplan.utils.Data;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,6 +67,10 @@ public class Initializer {
 
     public void init() {
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        FLSVertretungsplan.dateToSend = dtf.format(now);
+
         startDelayTimer();
 
         Data.packedToSend = new ArrayList<>();
@@ -74,7 +80,7 @@ public class Initializer {
         mysql = new SQL(Data.host, Data.database, Data.user, Data.password);
         mysql.connect();
 
-        updater = new VplanUpdater(loadDays);
+        updater = new VplanUpdater(loadDays, now);
         updater.update();
 
     }

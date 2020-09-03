@@ -4,7 +4,7 @@ package vplan.command.commands;
 import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
-public class CMD_client extends FLSCommand {
+public class CMD_client extends CMD_exit {
 
     public CMD_client(String command, String[] arguments) {
         super(command, arguments);
