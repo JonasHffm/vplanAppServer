@@ -80,6 +80,11 @@ public class VplanSQLMethods {
 
     public void packVertretungsstunden(String date) {
 
+        ArrayList<Vertretung> rest = new ArrayList<>();
+        for(Vertretung vertretung : Data._vertretungsList) {
+            rest.add(vertretung);
+        }
+
         if(Data._vertretungsList.size() != 0) {
             Data.packedToSend.clear();
             int packed = 0;
@@ -101,8 +106,9 @@ public class VplanSQLMethods {
                             && fach.equals(check.getFach())) {
 
                         if(check != vstunde) {
-                            int stundeCHECK = Integer.valueOf(check.getStunde().split("|")[0]);
-                            int stundeVSTUNDE = Integer.valueOf(vstunde.getStunde().split("|")[0]);
+                            rest.remove(check);
+                            int stundeCHECK = Integer.valueOf(check.getStunde().split("\\|")[0]);
+                            int stundeVSTUNDE = Integer.valueOf(vstunde.getStunde().split("\\|")[0]);
                             if(stundeVSTUNDE > stundeCHECK  && (Math.abs(stundeCHECK-stundeVSTUNDE) == 1)) {
                                 if(stundeCHECK == 1 && stundeVSTUNDE == 2 || stundeCHECK == 3 && stundeVSTUNDE == 4 || stundeCHECK == 5 && stundeVSTUNDE == 6 || stundeCHECK == 7 && stundeVSTUNDE == 8 || stundeCHECK == 9 && stundeVSTUNDE == 10) {
                                     packed++;
@@ -129,13 +135,21 @@ public class VplanSQLMethods {
                                     System.out.println();
                                     */
 
-
+                                    rest.remove(check);
                                     Data.packedToSend.add(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + stundeCHECK + "./" + stundeVSTUNDE + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
                                 }
                             }
                         }
                     }
                 }
+            }
+            for(Vertretung check : rest) {
+                String firstTime = "";
+                String secondTime = "";
+                for(int i = 2; i <= 18; i++) {
+                    firstTime += check.getStunde().split("|")[i];
+                }
+                Data.packedToSend.add(check.getSchultyp() + ";" + check.getDatum() + ";" + check.getKlasse() + ";" + check.getStunde().split("\\|")[0] + ".|" + firstTime + "|" + secondTime + ";" + check.getTeacher() + ";" + check.getFach() + ";" + check.getRaum() + ";" + check.getVteacher() + ";" + check.getVfach() + ";" + check.getVraum() + ";" + check.getMerkmal() + ";" + check.getInfo());
             }
             System.out.println("Es wurden " + packed + " Stunden zusammengefasst!");
             System.out.println();

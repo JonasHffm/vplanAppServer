@@ -50,6 +50,12 @@ public class CMD_vertretung extends FLSCommand {
                 System.out.println("-----------------------------------------------");
             }else if(args[0].equalsIgnoreCase("pack")) {
                 FLSVertretungsplan.instance.getVplanSQLMethods().packVertretungsstunden("ALL LOADED DATES");
+                System.out.println("---------------- VERTRETUNGSSTUNDEN | PACKED ----------------");
+                System.out.println();
+                for(String packed : Data.packedToSend) {
+                    System.out.println(packed);
+                }
+                System.out.println();
             }else {
                 System.out.println(Data.prefix + "Usage: ");
                 System.out.println(Data.prefix + " -> vertretung update");
