@@ -4,23 +4,33 @@ import vplan.utils.Data;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.net.InetAddress;
 import java.util.Date;
 
 public class Server {
 
     private ServerSocket server;
     private int port;
+    private InetAddress bindAddr;
     private ClientAcception clientAcception;
     static final String newLine = "\r\n";
 
     public Server(int port) {
         this.port = port;
+        this.bindAddr = null;
+    }
+
+    public Server(int port, String listenHost) throws UnknownHostException {
+        this.port = port;
+        this.bindAddr = InetAddress.getByName(listenHost);
     }
 
     public void boot() {
         try {
-            this.server = new ServerSocket(this.port);
+            this.server = new ServerSocket(this.port, 0, this.bindAddr);
             System.out.println("Der Server wurde gestartet!");
+            System.out.println("Server listens on: " + this.server.getLocalSocketAddress().toString());
             System.out.println("Starte Client Acception");
             System.out.println("Suche nach Clients...");
             System.out.println();

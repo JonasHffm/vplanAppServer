@@ -28,7 +28,7 @@ public class FLSVertretungsplan {
         System.out.println();
         System.out.println();
 
-        server = new Server(serverConfiguration.getServerPort());
+        server = new Server(serverConfiguration.getServerPort(), serverConfiguration.getListenAddress());
         server.boot();
 
         // Install something to gracefully shutting down.

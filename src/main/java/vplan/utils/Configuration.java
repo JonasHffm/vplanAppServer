@@ -29,8 +29,16 @@ public class Configuration {
         return this.prop.getProperty("databasePassword", "");
     }
 
+    public String getListenAddress() {
+        return this.prop.getProperty("listen");
+    }
+
     public int getServerPort() {
         return Integer.parseInt(this.prop.getProperty("port", "1112"));
+    }
+
+    public boolean isBatchMode() {
+        return Boolean.parseBoolean(this.prop.getProperty("batchMode", "false"));
     }
 
     public static Configuration fromConfiguration(String fileName) throws IOException {

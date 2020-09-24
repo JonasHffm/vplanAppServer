@@ -77,7 +77,11 @@ public class Initializer {
         LocalDateTime now = LocalDateTime.now();
         FLSVertretungsplan.dateToSend = dtf.format(now);
 
-        startDelayTimer();
+        // Start console interactively, only if not disabled in config.
+        // correct solution would be, to have a -I or -i argument option.
+        if (!this.config.isBatchMode()) {
+            startDelayTimer();
+        }
 
         Data.packedToSend = new ArrayList<>();
 
