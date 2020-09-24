@@ -1,6 +1,5 @@
 package vplan.command.commands;
 
-import vplan.command.FLSCommand;
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 import vplan.utils.Log;

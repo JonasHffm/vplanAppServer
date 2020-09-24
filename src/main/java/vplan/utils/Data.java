@@ -34,6 +34,4 @@ public class Data {
 
     public static boolean doneLoading = false;
 
-
-
 }

@@ -1,6 +1,5 @@
 package vplan.sql;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,7 +13,6 @@ public class SQL {
     private String PASSWORD;
 
     private Connection con;
-
 
     public SQL(String host, String database, String user, String password) {
         this.HOST = host;
@@ -37,7 +35,6 @@ public class SQL {
 
     }
 
-
     public void close() {
         try {
             if (con != null) {
@@ -51,7 +48,6 @@ public class SQL {
         }
     }
 
-
     public void update(String qry) {
 
         try {
@@ -61,7 +57,6 @@ public class SQL {
         }
 
     }
-
 
     public ResultSet getResults(String qry) {
 
@@ -81,5 +76,4 @@ public class SQL {
         }
 
     }
-
 }

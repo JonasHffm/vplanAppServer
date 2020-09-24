@@ -1,6 +1,5 @@
 package vplan.main;
 
-
 import vplan.command.CommandHandler;
 import vplan.command.CommandReader;
 import vplan.command.commands.*;

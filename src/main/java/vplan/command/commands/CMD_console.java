@@ -1,6 +1,5 @@
 package vplan.command.commands;
 
-
 import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
@@ -25,6 +24,5 @@ public class CMD_console extends FLSCommand {
             System.out.println(Data.prefix + "Usage: ");
             System.out.println(Data.prefix + " -> console clear");
         }
-
     }
 }

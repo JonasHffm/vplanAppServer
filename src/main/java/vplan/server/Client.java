@@ -1,11 +1,9 @@
 package vplan.server;
 
-
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Client{
@@ -31,9 +29,7 @@ public class Client{
             FLSVertretungsplan.server.sendVertretungsstunden(this.client);
             Data.clientUpdateList.put(this.client.getInetAddress().toString(), true);
         }
-
     }
-
 
     public Socket getClient() {
         return client;

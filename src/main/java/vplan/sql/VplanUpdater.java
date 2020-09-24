@@ -1,10 +1,8 @@
 package vplan.sql;
 
-
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;

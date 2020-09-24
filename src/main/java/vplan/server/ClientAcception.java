@@ -1,6 +1,5 @@
 package vplan.server;
 
-
 import vplan.utils.Data;
 
 import java.io.IOException;
@@ -50,5 +49,4 @@ public class ClientAcception extends Thread {
         }, 0, 50);
 
     }
-
 }

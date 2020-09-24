@@ -1,15 +1,10 @@
 package vplan.server;
 
 import vplan.utils.Data;
-import vplan.utils.Vertretung;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class Server {
 

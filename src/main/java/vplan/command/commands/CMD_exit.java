@@ -1,6 +1,5 @@
 package vplan.command.commands;
 
-import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
 public class CMD_exit extends CMD_vertretung {
