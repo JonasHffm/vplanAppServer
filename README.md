@@ -23,7 +23,7 @@ The generated jar file can be found in `target/` directory.
 
 ### Starting server
 `
-$> java -jar FLSVplanServer-1.0-xxx.jar
+$> java -jar FLSVplanServer-1.0-xxx.jar <configurationfile>.prop
 `
 
 ## Contributing

@@ -10,6 +10,7 @@ public class Server {
 
     private ServerSocket server;
     private int port;
+    private ClientAcception clientAcception;
     static final String newLine = "\r\n";
 
     public Server(int port) {
@@ -23,13 +24,23 @@ public class Server {
             System.out.println("Starte Client Acception");
             System.out.println("Suche nach Clients...");
             System.out.println();
-
-            ClientAcception clientAcception = new ClientAcception(this.server);
-            clientAcception.start();
-
+            this.clientAcception = new ClientAcception(this.server);
+            this.clientAcception.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void shutdown() {
+        if (this.clientAcception != null) {
+            this.clientAcception.requestTermination();
+        }
+        try {
+            this.server.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Server shutdown.");
     }
 
     public void sendVertretungsstunden(Socket _client) throws IOException {
@@ -40,7 +51,6 @@ public class Server {
 
         PrintStream pout = new PrintStream(out);
         BufferedReader in = new BufferedReader(new InputStreamReader(_client.getInputStream()));
-
 
         // read first line of request
         String request = in.readLine();
@@ -58,10 +68,10 @@ public class Server {
             pout.print("HTTP/1.0 400 Bad Request" + newLine + newLine);
         } else {
 
+            for(String stundeTosend : Data.packedToSend) {
+                response += stundeTosend + "\n";
+            }
 
-        for(String stundeTosend : Data.packedToSend) {
-            response += stundeTosend + "\n";
-        }
             pout.print(
                 "HTTP/1.0 200 OK" + newLine +
                 "Content-Type: text/plain" + newLine +
