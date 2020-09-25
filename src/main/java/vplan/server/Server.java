@@ -1,40 +1,56 @@
 package vplan.server;
 
 import vplan.utils.Data;
-import vplan.utils.Vertretung;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
+import java.net.UnknownHostException;
+import java.net.InetAddress;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class Server {
 
     private ServerSocket server;
     private int port;
+    private InetAddress bindAddr;
+    private ClientAcception clientAcception;
     static final String newLine = "\r\n";
 
     public Server(int port) {
         this.port = port;
+        this.bindAddr = null;
+    }
+
+    public Server(int port, String listenHost) throws UnknownHostException {
+        this.port = port;
+        this.bindAddr = InetAddress.getByName(listenHost);
     }
 
     public void boot() {
         try {
-            this.server = new ServerSocket(this.port);
+            this.server = new ServerSocket(this.port, 0, this.bindAddr);
             System.out.println("Der Server wurde gestartet!");
+            System.out.println("Server listens on: " + this.server.getLocalSocketAddress().toString());
             System.out.println("Starte Client Acception");
             System.out.println("Suche nach Clients...");
             System.out.println();
-
-            ClientAcception clientAcception = new ClientAcception(this.server);
-            clientAcception.start();
-
+            this.clientAcception = new ClientAcception(this.server);
+            this.clientAcception.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void shutdown() {
+        if (this.clientAcception != null) {
+            this.clientAcception.requestTermination();
+        }
+        try {
+            this.server.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Server shutdown.");
     }
 
     public void sendVertretungsstunden(Socket _client) throws IOException {
@@ -45,7 +61,6 @@ public class Server {
 
         PrintStream pout = new PrintStream(out);
         BufferedReader in = new BufferedReader(new InputStreamReader(_client.getInputStream()));
-
 
         // read first line of request
         String request = in.readLine();
@@ -63,10 +78,10 @@ public class Server {
             pout.print("HTTP/1.0 400 Bad Request" + newLine + newLine);
         } else {
 
+            for(String stundeTosend : Data.packedToSend) {
+                response += stundeTosend + "\n";
+            }
 
-        for(String stundeTosend : Data.packedToSend) {
-            response += stundeTosend + "\n";
-        }
             pout.print(
                 "HTTP/1.0 200 OK" + newLine +
                 "Content-Type: text/plain" + newLine +

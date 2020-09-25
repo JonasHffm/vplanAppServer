@@ -1,54 +1,39 @@
 package vplan.server;
 
-
 import vplan.utils.Data;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.net.SocketException;
 
 public class ClientAcception extends Thread {
 
     private ServerSocket server;
-    private Boolean timerBool = false;
-
-
-    @Override
-    public void run() {
-        accept();
-    }
+    private boolean running = false;
 
     public ClientAcception(ServerSocket server) {
         this.server = server;
     }
 
-    public void accept() {
-        Timer timerScheduleAtFixed = new Timer();
-        timerScheduleAtFixed.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    if (!timerBool) {
-                        Client client = new Client(server.accept());
-                        Data.clientList.add(client.getClient().getInetAddress().toString());
-                        timerBool = true;
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                timerBool = false;
-                            }
-                        }, 1000 / 4);
-
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    @Override
+    public void run() {
+        this.running = true;
+        while(this.running) {
+            try {
+                Client client = new Client(server.accept());
+                Data.clientList.add(client.getClient().getInetAddress().toString());
+            } catch (SocketException e) {
+                e.printStackTrace();
+                this.running = false;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }, 0, 50);
-
+        }
+        System.out.println("ClientAcception is terminating...");
     }
 
+    public void requestTermination() {
+        System.out.println("ClientAcception shutdown requested.");
+        this.running = false;
+    }
 }

@@ -1,7 +1,5 @@
 package vplan.command.commands;
 
-
-import vplan.command.FLSCommand;
 import vplan.utils.Data;
 
 public class CMD_client extends CMD_exit {

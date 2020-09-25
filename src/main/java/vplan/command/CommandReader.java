@@ -1,16 +1,10 @@
 package vplan.command;
 
-
-
 import jline.console.ConsoleReader;
 import jline.console.completer.ArgumentCompleter;
 import jline.console.completer.StringsCompleter;
 import vplan.utils.Log;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class CommandReader extends Thread {
 
@@ -60,7 +54,5 @@ public class CommandReader extends Thread {
         }while (!cmdLine.startsWith("exit"));
 
         System.exit(0);
-
     }
-
 }

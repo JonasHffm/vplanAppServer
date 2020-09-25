@@ -2,28 +2,20 @@ package vplan.sql;
 
 import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
-import vplan.utils.Log;
 import vplan.utils.Vertretung;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class VplanSQLMethods {
 
-    private boolean done = true;
-
     public void getVertretungsstundenAtDate(final String date) {
-
-        ArrayList<Vertretung> vertretungsList = new ArrayList<Vertretung>();
 
         System.out.println(">>> Lade Daten vom " + date);
         Data.acceptClients = false;
@@ -287,6 +279,4 @@ public class VplanSQLMethods {
         return returnDateValue;
 
     }
-
-
 }

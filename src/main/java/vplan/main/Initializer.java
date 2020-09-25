@@ -1,12 +1,12 @@
 package vplan.main;
 
-
 import vplan.command.CommandHandler;
 import vplan.command.CommandReader;
 import vplan.command.commands.*;
 import vplan.sql.SQL;
 import vplan.sql.VplanSQLMethods;
 import vplan.sql.VplanUpdater;
+import vplan.utils.Configuration;
 import vplan.utils.Data;
 
 import java.time.LocalDateTime;
@@ -22,6 +22,11 @@ public class Initializer {
     private VplanUpdater updater;
     private SQL mysql;
     private VplanSQLMethods vplanSQLMethods;
+    private Configuration config;
+
+    public Initializer(Configuration config) {
+        this.config = config;
+    }
 
     public CommandHandler getHandler() {
         return handler;
@@ -63,6 +68,7 @@ public class Initializer {
         this.vplanSQLMethods = vplanSQLMethods;
     }
 
+    // FIXME: put into configurations or get information from CMS configuration.
     public int loadDays = 2;
 
     public void init() {
@@ -71,18 +77,22 @@ public class Initializer {
         LocalDateTime now = LocalDateTime.now();
         FLSVertretungsplan.dateToSend = dtf.format(now);
 
-        startDelayTimer();
+        // Start console interactively, only if not disabled in config.
+        // correct solution would be, to have a -I or -i argument option.
+        if (!this.config.isBatchMode()) {
+            startDelayTimer();
+        }
 
         Data.packedToSend = new ArrayList<>();
 
         vplanSQLMethods = new VplanSQLMethods();
 
-        mysql = new SQL(Data.host, Data.database, Data.user, Data.password);
+        mysql = new SQL(this.config.getDatabaseDSN(), this.config.getDatabaseUser(), this.config.getDatabasePassword());
+        // FIXME: Slightly die and kill process, if connection is not possible (wrong configuration).
         mysql.connect();
 
         updater = new VplanUpdater(loadDays, now);
         updater.update();
-
     }
 
     public void startDelayTimer() {

@@ -1,6 +1,5 @@
 package vplan.sql;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,25 +7,22 @@ import java.sql.SQLException;
 
 public class SQL {
 
-    private String HOST;
-    private String DATABASE;
-    private String USER;
-    private String PASSWORD;
+    private String dsn;
+    private String user;
+    private String password;
 
     private Connection con;
 
-
-    public SQL(String host, String database, String user, String password) {
-        this.HOST = host;
-        this.DATABASE = database;
-        this.USER = user;
-        this.PASSWORD = password;
+    public SQL(String dsn, String user, String password) {
+        this.dsn = dsn;
+        this.user = user;
+        this.password = password;
     }
 
     public void connect() {
         try {
             System.out.println(" ");
-            con = DriverManager.getConnection("jdbc:mysql://" + HOST + ":3306/" + DATABASE + "?autoReconnect=true", USER, PASSWORD);
+            con = DriverManager.getConnection(this.dsn, this.user, this.password);
             System.out.println("Die Verbindung zur MySQL-Datenbank wurde hergestellt!");
         } catch (SQLException e) {
             System.out.println(" ");
@@ -34,9 +30,7 @@ public class SQL {
         }
         System.out.println(" ");
         System.out.println(" ");
-
     }
-
 
     public void close() {
         try {
@@ -51,7 +45,6 @@ public class SQL {
         }
     }
 
-
     public void update(String qry) {
 
         try {
@@ -61,7 +54,6 @@ public class SQL {
         }
 
     }
-
 
     public ResultSet getResults(String qry) {
 
@@ -81,5 +73,4 @@ public class SQL {
         }
 
     }
-
 }
