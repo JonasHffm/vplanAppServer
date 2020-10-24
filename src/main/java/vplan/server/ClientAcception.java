@@ -18,6 +18,7 @@ public class ClientAcception extends Thread {
     @Override
     public void run() {
         this.running = true;
+
         while(this.running) {
             try {
                 Client client = new Client(server.accept());

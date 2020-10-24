@@ -47,7 +47,7 @@ public class CMD_vertretung extends CMD_console {
                 System.out.println(" -> Es wurden " + Data._vertretungsList.size() + " Stunden auf dem Server geladen!");
                 System.out.println("-----------------------------------------------");
             }else if(args[0].equalsIgnoreCase("pack")) {
-                FLSVertretungsplan.instance.getVplanSQLMethods().packVertretungsstunden("ALL LOADED DATES");
+                FLSVertretungsplan.instance.getVplanSQLMethods().packVertretungsstunden();
                 System.out.println("---------------- VERTRETUNGSSTUNDEN | PACKED ----------------");
                 System.out.println();
                 for(String packed : Data.packedToSend) {

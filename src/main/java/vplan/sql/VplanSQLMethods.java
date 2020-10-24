@@ -17,19 +17,24 @@ public class VplanSQLMethods {
 
     public void getVertretungsstundenAtDate(final String date) {
 
-        System.out.println(">>> Lade Daten vom " + date);
+
         Data.acceptClients = false;
+        int latestvpac = getLatestVPacNoByDate(date);
+        String dateFromVpac = getDateFromVPac(latestvpac);
+        System.out.println(">>> Lade Daten vom " + date);
+        System.out.println("VPACNO: " + latestvpac);
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            ResultSet rs = FLSVertretungsplan.instance.getMysql().getResults("SELECT DISTINCT vpday, vphour, vpstart, vpend, vpclass, vptutor, vpsubject, vproom, vpctutor, vpcsubject, vpcroom, vpnote, vpinfo, vpcourse, vpschool, vptype, vpguid FROM fls_vplan WHERE vpday = '" + date + "'");
+
+            //ResultSet rs = FLSVertretungsplan.instance.getMysql().getResults("SELECT DISTINCT vpday, vphour, vpstart, vpend, vpclass, vptutor, vpsubject, vproom, vpctutor, vpcsubject, vpcroom, vpnote, vpinfo, vpcourse, vpschool, vptype, vpguid FROM fls_vplan WHERE vpday = '" + date + "'");
+            ResultSet rs = FLSVertretungsplan.instance.getMysql().getResults("SELECT * FROM fls_vplan WHERE vpacno = '" + latestvpac + "'");
 
             int downloadCount = 0;
             @Override
             public void run() {
 
                 try {
-
                     if(rs.next()) {
 
                         String schultyp = String.valueOf(rs.getInt("vpschool"));
@@ -45,11 +50,12 @@ public class VplanSQLMethods {
                         String merkmal = rs.getString("vpnote");
                         String info = rs.getString("vpinfo");
 
-                        Vertretung vertretung = new Vertretung(schultyp, datum, klasse, stunde, teacher, fach, raum, vteacher, vfach, vraum, merkmal, info);
-                        Data._vertretungsList.add(vertretung);
-                        downloadCount++;
-                        //System.out.println("Loading...  DAY(" + date + ")   >>   " + vertretung + "  (" + currentPos + " / " + lenght + ")");
-
+                        if(date.equalsIgnoreCase(datum)) {
+                            Vertretung vertretung = new Vertretung(schultyp, datum, klasse, stunde, teacher, fach, raum, vteacher, vfach, vraum, merkmal, info);
+                            Data._vertretungsList.add(vertretung);
+                            downloadCount++;
+                            //System.out.println("Loading...  DAY(" + date + ")   >>   " + vertretung + "  (" + currentPos + " / " + lenght + ")");
+                        }
                     }else {
                         System.out.println("<<< Download der Daten vom " + date + " abgeschlossen!  (Stunden: " + downloadCount + ")");
                         downloadCount = 0;
@@ -74,7 +80,7 @@ public class VplanSQLMethods {
 
     }
 
-    public void packVertretungsstunden(String date) {
+    public void packVertretungsstunden() {
 
         ArrayList<Vertretung> rest = new ArrayList<>();
         for(Vertretung vertretung : Data._vertretungsList) {
@@ -94,10 +100,16 @@ public class VplanSQLMethods {
                     String tutor = vstunde.getTeacher();
                     String fach = vstunde.getFach();
 
+                    //Fix null ex
+                    if(raum == null) {
+                        raum = "None";
+                    }
+
                     if (schultyp.equals(check.getSchultyp())
                             && datum.equals(check.getDatum())
                             && klasse.equals(check.getKlasse())
-                            && raum.equals(check.getRaum())
+                            //Added another check to bypass room check if null
+                            && (raum.equalsIgnoreCase("None") || raum.equals(check.getRaum()))
                             && tutor.equals(check.getTeacher())
                             && fach.equals(check.getFach())) {
 
@@ -279,4 +291,31 @@ public class VplanSQLMethods {
         return returnDateValue;
 
     }
+
+
+    public int getLatestVPacNoByDate(String date) {
+        ResultSet resultSet = FLSVertretungsplan.instance.getMysql().getResults("SELECT * FROM fls_vplan WHERE vpday = '" + date + "' ORDER BY vpacno DESC LIMIT 1");
+        try {
+            while (resultSet.next()) {
+                return resultSet.getInt("vpacno");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public String getDateFromVPac(int vpac) {
+        ResultSet rs = FLSVertretungsplan.instance.getMysql().getResults("SELECT * FROM fls_vplan WHERE vpacno = '" + vpac + "'");
+        try {
+            while (rs.next()) {
+                return rs.getString("vpday");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
 }

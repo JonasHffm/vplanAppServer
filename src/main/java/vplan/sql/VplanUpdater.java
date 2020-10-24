@@ -25,7 +25,7 @@ public class VplanUpdater{
             Data.clientUpdateList.put(client, false);
         }
         for(int i = 0; i <= loadDays; i++) {
-            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, "2020-09-05"));
+            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, "2020-02-19"));
         }
 
         //for(Vertretung vertretung : Data._vertretungsList) Main.vplanSQLMethods.removeDoubleStunden(vertretung);

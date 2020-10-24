@@ -101,11 +101,13 @@ public class Initializer {
             @Override
             public void run() {
                 if(Data.doneLoading) {
-                    new VplanSQLMethods().packVertretungsstunden("ALL LOADED DAYS");
+                    new VplanSQLMethods().packVertretungsstunden();
                     Data.doneLoading = false;
                     Data.alreadyDownloaded = 0;
 
-                    if(handler == null) {
+                    //Not available in server mode
+
+                    /*if(handler == null) {
                         handler = new CommandHandler();
                         command_reader = new CommandReader(handler);
                         command_reader.start();
@@ -116,6 +118,7 @@ public class Initializer {
                         handler.registerCommand(new CMD_console("console", new String[]{"clear"}));
                         handler.registerCommand(new CMD_exit("exit", new String[]{}));
                     }
+                     */
 
                 }
             }
