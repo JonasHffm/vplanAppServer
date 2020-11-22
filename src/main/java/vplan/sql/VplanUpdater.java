@@ -4,6 +4,7 @@ import vplan.main.FLSVertretungsplan;
 import vplan.utils.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,8 +25,13 @@ public class VplanUpdater{
         for(String client : Data.clientUpdateList.keySet()) {
             Data.clientUpdateList.put(client, false);
         }
-        for(int i = 0; i <= loadDays; i++) {
-            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, "2020-02-19"));
+
+        //GET CURRENT DATE
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+
+        for(int i = 0; i <= loadDays; i++) {                                                                                                              //DATE INPUT
+            FLSVertretungsplan.instance.getVplanSQLMethods().getVertretungsstundenAtDate(FLSVertretungsplan.instance.getVplanSQLMethods().getAddedDate(i, dtf.format(now)));
         }
 
         //for(Vertretung vertretung : Data._vertretungsList) Main.vplanSQLMethods.removeDoubleStunden(vertretung);
